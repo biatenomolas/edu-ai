@@ -37,16 +37,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post('http://localhost:5000/api/login', { email, password });
-    const { token: newToken, user: newUser } = res.data;
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setToken(newToken);
-    setUser(newUser);
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`, { email, password });
+      const { token: newToken, user: newUser } = res.data;
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setToken(newToken);
+      setUser(newUser);
+    } catch (err: any) {
+      throw err;
+    }
   };
 
   const register = async (username: string, email: string, password: string) => {
-    await axios.post('http://localhost:5000/api/register', { username, email, password });
+    try {
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/register`, { username, email, password });
+    } catch (err) {
+      throw err;
+    }
   };
 
   const logout = () => {
@@ -65,6 +73,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (undefined === context) throw new Error('useAuth must be used within AuthProvider');
+  if (!context) throw new Error('useAuth doit être utilisé dans AuthProvider');
   return context;
 };
