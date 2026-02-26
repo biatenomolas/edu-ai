@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { Upload, FileText, Sparkles, Target, CheckCircle, XCircle } from 'lucide-react';
+import { Upload, CheckCircle, XCircle } from 'lucide-react';
 
 export default function ResumePage() {
   const { token } = useAuth();
@@ -80,7 +80,6 @@ export default function ResumePage() {
         setSelected(null);
       } else {
         setFinished(true);
-        // Sauvegarde score + XP
         axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/save-quiz-result`, {
           summary_id: summaryId,
           score
@@ -95,7 +94,6 @@ export default function ResumePage() {
     <div className="max-w-md mx-auto p-6 pt-10 bg-white min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-8">Résumé & Quizz IA</h1>
 
-      {/* Upload */}
       <div className="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center mb-6">
         <Upload className="mx-auto text-blue-600 mb-4" size={48} />
         <label className="block bg-blue-600 text-white py-3 rounded-2xl cursor-pointer">
