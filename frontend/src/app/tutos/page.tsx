@@ -10,14 +10,20 @@ export default function TutosPage() {
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
+    if (!query.trim()) return alert('Tape quelque chose !');
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/youtube-search?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/youtube-search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
+
+      if (data.message) {
+        throw new Error(data.message);
+      }
+
       setVideos(data);
     } catch (err) {
+      console.error('Erreur recherche YouTube :', err);
       alert('Erreur lors de la recherche YouTube');
     } finally {
       setLoading(false);
