@@ -30,7 +30,7 @@ export default function Dashboard() {
 
     const fetchClassement = async () => {
       try {
-        const res = await fetch(${process.env.NEXT_PUBLIC_BACKEND_URL}, {
+        const res = await fetch('http://localhost:5000/api/classement', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
